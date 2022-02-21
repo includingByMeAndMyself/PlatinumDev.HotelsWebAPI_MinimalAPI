@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PlatinumDev.HotelsWebAPI.DAL.Repository
+{
+    public interface IHotelRepository : IDisposable
+    {
+        Task<List<Hotel?>> GetHotelsAsync();
+        Task<List<Hotel?>> GetHotelsAsync(string name);
+        Task<Hotel?> GetHotelAsync(int hotelId);
+        Task InsertHotelAsync(Hotel hotel);
+        Task UpdateHotelAsync (Hotel hotel);
+        Task DeleteHotelAsync (int hotelId);
+        Task SaveAsync();
+    }
+}
