@@ -1,5 +1,6 @@
 
 using PlatinumDev.HotelsWebAPI.DAL.Repository;
+using PlatinumDev.HotelsWebAPI.Infrastruct;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -22,7 +23,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapGet("/hotels", async (IHotelRepository repository) => 
-    Results.Ok(await repository.GetHotelsAsync()))
+    Results.Extensions.Xml(await repository.GetHotelsAsync()))
     .Produces<List<Hotel>>(StatusCodes.Status200OK)
     .WithName("GetAllHotels")
     .WithTags("Getters");
@@ -67,13 +68,20 @@ app.MapDelete("hotels/{id}", async (int id, IHotelRepository repository) =>
     .WithTags("Deleters");
 
 app.MapGet("/hotels/search/name/{query}", async (string query, IHotelRepository repository) =>
-    await repository.GetHotelsAsync(query) is IEnumerable<Hotel> hotels
-        ? Results.Ok(hotels)
-        : Results.NotFound(Array.Empty<Hotel>()))
+        await repository.GetHotelsAsync(query) is IEnumerable<Hotel> hotels
+            ? Results.Ok(hotels)
+            : Results.NotFound(Array.Empty<Hotel>()))
     .Produces<List<Hotel>>(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status404NotFound)
     .WithName("SearchHotel")
     .WithTags("Getters")
+    .ExcludeFromDescription();
+
+app.MapGet("hotels/search/location/{coordinate}",
+        async (Coordinate coordinate, IHotelRepository repository) =>
+            await repository.GetHotelsAsync(coordinate) is IEnumerable<Hotel> hotels
+                ? Results.Ok(hotels)
+                : Results.NotFound(Array.Empty<Hotel>()))
     .ExcludeFromDescription();
 
 app.UseHttpsRedirection();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PlatinumDev.HotelsWebAPI.Infrastruct;
 
 namespace PlatinumDev.HotelsWebAPI.DAL.Repository
 {
@@ -10,6 +6,7 @@ namespace PlatinumDev.HotelsWebAPI.DAL.Repository
     {
         Task<List<Hotel?>> GetHotelsAsync();
         Task<List<Hotel?>> GetHotelsAsync(string name);
+        Task<List<Hotel?>> GetHotelsAsync(Coordinate coordinate);
         Task<Hotel?> GetHotelAsync(int hotelId);
         Task InsertHotelAsync(Hotel hotel);
         Task UpdateHotelAsync (Hotel hotel);
